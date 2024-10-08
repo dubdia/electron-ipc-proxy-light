@@ -30,6 +30,7 @@ export declare function connectRendererToMain<T>({ instance, channelPrefix, }: {
  * var mainToRenderer = createMainToRendererProxy<IEvents>();
  * onSomething.onClose("Hello from Main");
  */
-export declare function createMainToRendererProxy<T>({ channelPrefix }?: {
+export declare function createMainToRendererProxy<T>({ webContents, channelPrefix, }: {
+    webContents: Electron.WebContents;
     channelPrefix?: string;
 }): T;

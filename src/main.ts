@@ -46,7 +46,13 @@ export function connectRendererToMain<T>({
  * var mainToRenderer = createMainToRendererProxy<IEvents>();
  * onSomething.onClose("Hello from Main");
  */
-export function createMainToRendererProxy<T>({ channelPrefix = "ipc" }: { channelPrefix?: string } = {}): T {
+export function createMainToRendererProxy<T>({
+  webContents,
+  channelPrefix = "ipc",
+}: {
+  webContents: Electron.WebContents;
+  channelPrefix?: string;
+}): T {
   return new Proxy(
     {},
     {
@@ -54,8 +60,8 @@ export function createMainToRendererProxy<T>({ channelPrefix = "ipc" }: { channe
         if (typeof propKey === "string" && !(propKey in target)) {
           return (...args: any[]) => {
             // This returns a promise, assuming ipcRenderer.invoke is setup correctly in your main process
-            console.log(`Main to Renderer2 => ${channelPrefix}:${propKey}`, ...args);
-            return window.api.emit(`${channelPrefix}:${propKey}`, ...args);
+            console.log(`Main to Renderer => ${channelPrefix}:${propKey}`, ...args);
+            return webContents.emit(`${channelPrefix}:${propKey}`, ...args);
           };
         }
         return Reflect.get(target, propKey, receiver);
