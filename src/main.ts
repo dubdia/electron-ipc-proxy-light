@@ -54,8 +54,8 @@ export function createMainToRendererProxy<T>({ channelPrefix = "ipc" }: { channe
         if (typeof propKey === "string" && !(propKey in target)) {
           return (...args: any[]) => {
             // This returns a promise, assuming ipcRenderer.invoke is setup correctly in your main process
+            console.log(`Main to Renderer => ${channelPrefix}:${propKey}`, ...args);
             return ipcMain.emit(`${channelPrefix}:${propKey}`, ...args);
-            //console.log(`Main to Renderer => ${channelPrefix}:${propKey}`, ...args);
           };
         }
         return Reflect.get(target, propKey, receiver);

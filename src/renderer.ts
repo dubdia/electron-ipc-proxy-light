@@ -11,10 +11,12 @@ export function connectMainToRenderer<T>(
   channelPrefix: string = "ipc"
 ) {
   const methodNames = Object.getOwnPropertyNames(Object.getPrototypeOf(instance)) as (keyof T)[];
+  console.log('connectMainToRenderer', methodNames);
   methodNames.forEach((methodName) => {
     if (typeof instance[methodName] === "function") {
       window.api.on(`${channelPrefix}:${String(methodName)}`, async (event, ...args) => {
         // Using apply to call the method on the instance with the provided arguments
+        console.log('connectMainToRenderer invoke', methodName, args);
         return (instance[methodName] as any).apply(instance, args);
       });
     }
@@ -52,8 +54,8 @@ export function createRendererToMainProxy<TMethods>({
         if (typeof propKey === "string" && !(propKey in target)) {
           return (...args: any[]) => {
             // This returns a promise, assuming ipcRenderer.invoke is setup correctly in your main process
+            console.log(`Renderer to Main => ${channelPrefix}:${propKey}`, ...args);
             return window.api.invoke(`${channelPrefix}:${propKey}`, ...args);
-            //console.log(`Renderer to Main => ${channelPrefix}:${propKey}`, ...args);
           };
         }
         return Reflect.get(target, propKey, receiver);
