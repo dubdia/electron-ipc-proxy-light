@@ -4,12 +4,8 @@
  * that method will be called on given `instance`
  * @param ipcRenderer instance of the ipcRenderer from electron
  * @param instance instance of the same interface that was used in `createMainToRendererProxy`
- * @param channelPrefix used to prefix the IPC channel
  */
-export declare function connectMainToRenderer<T>({ instance, channelPrefix }: {
-    instance: T;
-    channelPrefix?: string;
-}): void;
+export declare function connectMainToRenderer<T>(instance: T): void;
 /**
  * call this method in the renderer.
  * creates an instance of a proxy class for given interface.
@@ -31,9 +27,7 @@ export declare function connectMainToRenderer<T>({ instance, channelPrefix }: {
  * var rendererToMain = createRendererToMainProxy<IMethods>();
  * let response = await rendererToMain.ping("this is a message from the renderer");
  */
-export declare function createRendererToMainProxy<TMethods>({ channelPrefix, }?: {
-    channelPrefix?: string;
-}): PromisifyMethods<TMethods>;
+export declare function createRendererToMainProxy<TMethods>(): PromisifyMethods<TMethods>;
 /** helper type that wraps the return types of functions inside a promise */
 export type PromisifyMethods<T> = {
     [P in keyof T]: T[P] extends (...args: infer Args) => infer R ? (...args: Args) => Promise<R> : never;

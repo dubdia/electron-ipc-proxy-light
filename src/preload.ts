@@ -2,7 +2,7 @@ import { contextBridge, ipcRenderer } from "electron";
 
 /** exposes ipcRenderer methods "in the main world". Call this method in the preload.js to enable IPC calls */
 export function expose() {
-  contextBridge.exposeInMainWorld("api", {
+  contextBridge.exposeInMainWorld(channelName, {
     on(...args: Parameters<typeof ipcRenderer.on>) {
       const [channel, listener] = args;
       return ipcRenderer.on(channel, (event, ...args) => listener(event, ...args));
@@ -25,6 +25,6 @@ export function expose() {
 // create strongly typed window.api that can be used in the renderer to access IPC commands
 declare global {
   interface Window {
-    api: typeof ipcRenderer;
+    ipcProxyLight: typeof ipcRenderer; // <- make sure this is same as channelName
   }
 }

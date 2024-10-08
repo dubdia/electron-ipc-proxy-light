@@ -4,14 +4,13 @@
  * that method will be called on given `instance`
  * @param ipcRenderer instance of the ipcRenderer from electron
  * @param instance instance of the same interface that was used in `createMainToRendererProxy`
- * @param channelPrefix used to prefix the IPC channel
  */
-export function connectMainToRenderer<T>({ instance, channelPrefix = "ipc" }: { instance: T; channelPrefix?: string }) {
+export function connectMainToRenderer<T>(instance: T) {
   const methodNames = Object.getOwnPropertyNames(Object.getPrototypeOf(instance)) as (keyof T)[];
   console.log("connectMainToRenderer", methodNames, instance, Object.getPrototypeOf(instance));
   methodNames.forEach((methodName) => {
     if (typeof instance[methodName] === "function") {
-      const id = `${channelPrefix}:${String(methodName)}`;
+      const id = `${channelName}:${String(methodName)}`;
       console.log("connectMainToRenderer listen to", id);
       window.api.on(id, async (event, ...args) => {
         // Using apply to call the method on the instance with the provided arguments
@@ -43,9 +42,7 @@ export function connectMainToRenderer<T>({ instance, channelPrefix = "ipc" }: { 
  * var rendererToMain = createRendererToMainProxy<IMethods>();
  * let response = await rendererToMain.ping("this is a message from the renderer");
  */
-export function createRendererToMainProxy<TMethods>({
-  channelPrefix = "ipc",
-}: { channelPrefix?: string } = {}): PromisifyMethods<TMethods> {
+export function createRendererToMainProxy<TMethods>(): PromisifyMethods<TMethods> {
   return new Proxy(
     {},
     {
@@ -53,8 +50,8 @@ export function createRendererToMainProxy<TMethods>({
         if (typeof propKey === "string" && !(propKey in target)) {
           return (...args: any[]) => {
             // This returns a promise, assuming ipcRenderer.invoke is setup correctly in your main process
-            console.log(`Renderer to Main => ${channelPrefix}:${propKey}`, ...args);
-            return window.api.invoke(`${channelPrefix}:${propKey}`, ...args);
+            console.log(`Renderer to Main => ${channelName}:${propKey}`, ...args);
+            return window.api.invoke(`${channelName}:${propKey}`, ...args);
           };
         }
         return Reflect.get(target, propKey, receiver);

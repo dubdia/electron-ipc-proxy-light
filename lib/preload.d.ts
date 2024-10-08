@@ -3,6 +3,6 @@ import { ipcRenderer } from "electron";
 export declare function expose(): void;
 declare global {
     interface Window {
-        api: typeof ipcRenderer;
+        ipcProxyLight: typeof ipcRenderer;
     }
 }
