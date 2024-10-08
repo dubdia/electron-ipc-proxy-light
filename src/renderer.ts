@@ -12,7 +12,7 @@ export function connectMainToRenderer<T>(instance: T) {
     if (typeof instance[methodName] === "function") {
       const id = `${channelName}:${String(methodName)}`;
       console.log("connectMainToRenderer listen to", id);
-      window.api.on(id, async (event, ...args) => {
+      window.ipcProxyLight.on(id, async (event, ...args) => {
         // Using apply to call the method on the instance with the provided arguments
         console.log("connectMainToRenderer invoke", methodName, args);
         return (instance[methodName] as any).apply(instance, args);
@@ -51,7 +51,7 @@ export function createRendererToMainProxy<TMethods>(): PromisifyMethods<TMethods
           return (...args: any[]) => {
             // This returns a promise, assuming ipcRenderer.invoke is setup correctly in your main process
             console.log(`Renderer to Main => ${channelName}:${propKey}`, ...args);
-            return window.api.invoke(`${channelName}:${propKey}`, ...args);
+            return window.ipcProxyLight.invoke(`${channelName}:${propKey}`, ...args);
           };
         }
         return Reflect.get(target, propKey, receiver);
