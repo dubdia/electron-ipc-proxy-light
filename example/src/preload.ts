@@ -1,3 +1,3 @@
-import { expose } from 'electron-ipc-proxy-light'
+import { expose } from "./ipc/preload";
 
 expose();

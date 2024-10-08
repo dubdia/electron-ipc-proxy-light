@@ -1,6 +1,6 @@
 import { app, BrowserWindow } from 'electron';
 import path from 'path';
-import { connectRendererToMain, createMainToRendererProxy} from 'electron-ipc-proxy-light'
+import { connectRendererToMain, createMainToRendererProxy } from './ipc/main';
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {

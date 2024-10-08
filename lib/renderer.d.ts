@@ -6,9 +6,7 @@
  * @param instance instance of the same interface that was used in `createMainToRendererProxy`
  * @param channelPrefix used to prefix the IPC channel
  */
-export declare function connectMainToRenderer<T>(ipcRenderer: {
-    on(channel: string, listener: (event: any, ...args: any[]) => void): any;
-}, instance: T, channelPrefix?: string): void;
+export declare function connectMainToRenderer<T>(instance: T, channelPrefix?: string): void;
 /**
  * call this method in the renderer.
  * creates an instance of a proxy class for given interface.

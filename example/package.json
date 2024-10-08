@@ -37,7 +37,6 @@
   },
   "license": "MIT",
   "dependencies": {
-    "electron-squirrel-startup": "^1.0.1",
-    "electron-ipc-proxy-light": "git://github.com/dubdia/electron-ipc-proxy-light.git"
+    "electron-squirrel-startup": "^1.0.1"
   }
 }

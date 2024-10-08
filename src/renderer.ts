@@ -7,14 +7,13 @@
  * @param channelPrefix used to prefix the IPC channel
  */
 export function connectMainToRenderer<T>(
-  ipcRenderer: { on(channel: string, listener: (event: any, ...args: any[]) => void): any },
   instance: T,
   channelPrefix: string = "ipc"
 ) {
   const methodNames = Object.getOwnPropertyNames(Object.getPrototypeOf(instance)) as (keyof T)[];
   methodNames.forEach((methodName) => {
     if (typeof instance[methodName] === "function") {
-      ipcRenderer.on(`${channelPrefix}:${String(methodName)}`, async (event, ...args) => {
+      window.api.on(`${channelPrefix}:${String(methodName)}`, async (event, ...args) => {
         // Using apply to call the method on the instance with the provided arguments
         return (instance[methodName] as any).apply(instance, args);
       });
