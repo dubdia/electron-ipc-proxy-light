@@ -6,17 +6,14 @@
  * @param instance instance of the same interface that was used in `createMainToRendererProxy`
  * @param channelPrefix used to prefix the IPC channel
  */
-export function connectMainToRenderer<T>(
-  instance: T,
-  channelPrefix: string = "ipc"
-) {
+export function connectMainToRenderer<T>({ instance, channelPrefix = "ipc" }: { instance: T; channelPrefix?: string }) {
   const methodNames = Object.getOwnPropertyNames(Object.getPrototypeOf(instance)) as (keyof T)[];
-  console.log('connectMainToRenderer', methodNames);
+  console.log("connectMainToRenderer", methodNames, instance, Object.getPrototypeOf(instance));
   methodNames.forEach((methodName) => {
     if (typeof instance[methodName] === "function") {
       window.api.on(`${channelPrefix}:${String(methodName)}`, async (event, ...args) => {
         // Using apply to call the method on the instance with the provided arguments
-        console.log('connectMainToRenderer invoke', methodName, args);
+        console.log("connectMainToRenderer invoke", methodName, args);
         return (instance[methodName] as any).apply(instance, args);
       });
     }

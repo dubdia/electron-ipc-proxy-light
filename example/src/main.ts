@@ -1,6 +1,7 @@
 import { app, BrowserWindow } from 'electron';
 import path from 'path';
 import {connectRendererToMain, createMainToRendererProxy} from "electron-ipc-proxy-light/lib/main"
+import { MethodsContract, EventsContract } from './shared';
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
@@ -29,7 +30,7 @@ const createWindow = () => {
 
   // IPC
   // create class for handling all methods
-class Methods implements IMethods {
+class Methods implements MethodsContract {
   public ping(argument: string) {
       return "pong: " + argument;
   }
@@ -40,7 +41,7 @@ let methods = new Methods();
 connectRendererToMain({ instance: methods });
 
 // and to emit events to the renderer, we create this proxy here for your interface
-let proxy = createMainToRendererProxy<IEvents>();
+let proxy = createMainToRendererProxy<EventsContract>();
 proxy.onSomething("Hello from Main");
 };
 
