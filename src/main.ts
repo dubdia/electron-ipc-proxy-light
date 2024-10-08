@@ -61,7 +61,7 @@ export function createMainToRendererProxy<T>({
           return (...args: any[]) => {
             // This returns a promise, assuming ipcRenderer.invoke is setup correctly in your main process
             console.log(`Main to Renderer => ${channelPrefix}:${propKey}`, ...args);
-            return webContents.emit(`${channelPrefix}:${propKey}`, ...args);
+            return webContents.send(`${channelPrefix}:${propKey}`, ...args);
           };
         }
         return Reflect.get(target, propKey, receiver);
