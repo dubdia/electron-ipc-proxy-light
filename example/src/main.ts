@@ -43,7 +43,8 @@ const createWindow = () => {
   setTimeout(() => {
     // and to emit events to the renderer, we create this proxy here for your interface
     console.log("Emit event here");
-    let proxy = createMainToRendererProxy<EventsContract>({ webContents: (mainWindow.webContents as any), channelPrefix: 'ipc' });
+    const c = { webContents: mainWindow.webContents, channelPrefix: 'ipc' };
+    let proxy = createMainToRendererProxy<EventsContract>(c);
     proxy.onSomething("Hello from Main");
   }, 1000);
 };

@@ -11,7 +11,9 @@ export function connectMainToRenderer<T>({ instance, channelPrefix = "ipc" }: { 
   console.log("connectMainToRenderer", methodNames, instance, Object.getPrototypeOf(instance));
   methodNames.forEach((methodName) => {
     if (typeof instance[methodName] === "function") {
-      window.api.on(`${channelPrefix}:${String(methodName)}`, async (event, ...args) => {
+      const id = `${channelPrefix}:${String(methodName)}`;
+      console.log("connectMainToRenderer listen to", id);
+      window.api.on(id, async (event, ...args) => {
         // Using apply to call the method on the instance with the provided arguments
         console.log("connectMainToRenderer invoke", methodName, args);
         return (instance[methodName] as any).apply(instance, args);
