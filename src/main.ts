@@ -1,4 +1,4 @@
-import { ipcMain } from "electron";
+import { ipcMain, WebContents } from "electron";
 
 /**
  * call this method in the main.
@@ -50,7 +50,7 @@ export function createMainToRendererProxy<T>({
   webContents,
   channelPrefix = "ipc",
 }: {
-  webContents: Electron.WebContents;
+  webContents: WebContents;
   channelPrefix?: string;
 }): T {
   return new Proxy(

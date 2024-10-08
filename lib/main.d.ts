@@ -1,3 +1,4 @@
+import { WebContents } from "electron";
 /**
  * call this method in the main.
  * connects the `ipcMain` to given class instance so that whenever the `ipcRenderer` invokes a method,
@@ -31,6 +32,6 @@ export declare function connectRendererToMain<T>({ instance, channelPrefix, }: {
  * onSomething.onClose("Hello from Main");
  */
 export declare function createMainToRendererProxy<T>({ webContents, channelPrefix, }: {
-    webContents: Electron.WebContents;
+    webContents: WebContents;
     channelPrefix?: string;
 }): T;
