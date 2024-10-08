@@ -13,7 +13,7 @@ class EventHandler extends EventsContract {
 
 // create instance and connect to main. So the main can emit methods and they get called here
 const eventHandler = new EventHandler();
-connectMainToRenderer(eventHandler);
+connectMainToRenderer({ instance: eventHandler });
 
 // create proxy to invoke methods from the interface on the main
 
