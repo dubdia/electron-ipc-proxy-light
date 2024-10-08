@@ -1,6 +1,5 @@
 import "./index.css";
-import { ipcRenderer } from "electron";
-import { connectMainToRenderer, createRendererToMainProxy } from "./ipc/renderer";
+import { connectMainToRenderer, createRendererToMainProxy } from "electron-ipc-proxy-light/lib/renderer";
 console.log('👋 This message is being logged by "renderer.ts", included via Vite');
 
 console.log('JO');
